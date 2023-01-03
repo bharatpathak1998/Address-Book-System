@@ -45,9 +45,16 @@ public class AddressBook {
         System.out.println("Enter Phone Number : ");
         address.setPhoneNumber(sc.nextLine());
 
+        // Here we are check the duplicate phone number in the arraylist :-
+        if (duplicateCheck(address.getPhoneNumber())) {
+            System.out.println("Given Phone Number is Already Exists!");
+            return;
+        }
+
         System.out.println("Enter Email Id : ");
         address.setEmail(sc.nextLine());
 
+        // Here we are adding address in the arraylist :-
         list.add(address);
         System.out.println(address);
         System.out.println("Contact Added Successfully.");
@@ -97,7 +104,14 @@ public class AddressBook {
                             break;
                         case 7:
                             System.out.println("Enter New Phone Number : ");
-                            address.setPhoneNumber(sc.nextLine());
+                            String editPhoneNumber = sc.nextLine();
+                            // Here we are check the duplicate phone number in the arraylist :-
+                            if (duplicateCheck(address.getPhoneNumber())) {
+                                System.out.println("Given Phone Number is Already Exists!");
+                                return;
+                            } else {
+                                address.setPhoneNumber(editPhoneNumber);
+                            }
                             break;
                         case 8:
                             System.out.println("Enter New Email Id : ");
@@ -223,6 +237,14 @@ public class AddressBook {
                 System.out.println("AddressBook Doesn't Exist!");
             }
         }
+    }
+
+    // Here we are create a function to check the duplicate phone number in the arraylist :-
+    public boolean duplicateCheck(String phoneNumber) {
+        Address check = list.stream()
+                .filter(i -> i.getPhoneNumber().equals(phoneNumber))
+                .findFirst().orElse(null);
+        return check != null;
     }
 
     public void operationInBook() {
