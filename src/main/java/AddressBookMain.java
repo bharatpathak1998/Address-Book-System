@@ -9,6 +9,7 @@ public class AddressBookMain {
     public static final int DELETE_BOOK_DETAILS = 5;
     public static final int DELETE_BOOK = 6;
     public static final int SEARCH_PERSON = 7;
+    public static final int VIEW_PERSON = 8;
     public static final int EXIT = 0;
 
     public static void main(String[] args) {
@@ -25,6 +26,7 @@ public class AddressBookMain {
             System.out.print(" 5.Delete From Multiple Book \n");
             System.out.print("6.Delete AddressBook ");
             System.out.print(" 7.Search Person ");
+            System.out.print(" 8.View Person ");
             System.out.print(" 0.Exit \n->");
 
             int options = sc.nextInt();
@@ -49,6 +51,9 @@ public class AddressBookMain {
                     break;
                 case SEARCH_PERSON:
                     addressBook.searchPersonFromMap();
+                    break;
+                case VIEW_PERSON:
+                    addressBook.viewPersonFromMap();
                     break;
                 case EXIT:
                     exit = false;

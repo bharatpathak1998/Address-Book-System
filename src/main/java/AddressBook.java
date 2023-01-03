@@ -2,10 +2,9 @@
  * @author Bharat Pathak
  */
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+
+import static java.util.stream.Collectors.groupingBy;
 
 public class AddressBook {
 
@@ -14,12 +13,14 @@ public class AddressBook {
     public static final int DELETE = 3;
     public static final int VIEW = 4;
     public static final int SEARCH_PERSON = 5;
+    public static final int VIEW_PERSON = 6;
     public static final int EXIT = 0;
     public static final int BY_CITY = 1;
     public static final int BY_STATE = 2;
     public static final String MAP = "map";
 
     Map<String, ArrayList<Address>> map = new HashMap<>();
+    Map<String, List<Address>> viewMap;
     ArrayList<Address> list;
     Scanner sc = new Scanner(System.in);
 
@@ -74,8 +75,8 @@ public class AddressBook {
 
                     System.out.print("1.Edit First Name  2.Edit Last Name  " +
                             "3.Edit Address  4.Edit City Name  " +
-                            "5.Edit State Name  6.Edit Zip Code " +
-                            " 7.Edit Phone Number  8.Edit Email Id\n->");
+                            "5.Edit State Name  6.Edit Zip Code  " +
+                            "7.Edit Phone Number  \n8.Edit Email Id  0.Exit\n->");
 
                     int option = sc.nextInt();
                     sc.nextLine();
@@ -254,8 +255,8 @@ public class AddressBook {
     public void searchPersonByCityMap() {
         System.out.println("Enter City Name To Search Person : ");
         String searchByCity = sc.nextLine();
-        map.keySet().forEach(key -> map.get(key)
-                .stream().filter(i -> i.getCity().equals(searchByCity))
+        map.keySet().forEach(key -> map.get(key).stream()
+                .filter(i -> i.getCity().equals(searchByCity))
                 .toList().forEach(System.out::println));
     }
 
@@ -263,8 +264,8 @@ public class AddressBook {
     public void searchPersonByStateMap() {
         System.out.println("Enter State Name To Search Person : ");
         String searchByState = sc.nextLine();
-        map.keySet().forEach(key -> map.get(key)
-                .stream().filter(i -> i.getState().equals(searchByState))
+        map.keySet().forEach(key -> map.get(key).stream()
+                .filter(i -> i.getState().equals(searchByState))
                 .toList().forEach(System.out::println));
     }
 
@@ -282,6 +283,104 @@ public class AddressBook {
         String searchByState = sc.nextLine();
         list.stream().filter(i -> i.getState().equals(searchByState))
                 .toList().forEach(System.out::println);
+    }
+
+    // Here we are create a function to view person by city from the map :-
+    public void viewPersonByCityMap() {
+        viewMap = new HashMap<>();
+        map.keySet().forEach(i -> map.get(i).stream()
+                .collect(groupingBy(Address::getCity))
+                .forEach((key, value) -> viewMap.merge(key, value, (city, details) -> {
+                    city.addAll(details);
+                    return city;
+                })));
+        viewMap.forEach(((key, value) -> System.out.println("[" + key.toUpperCase() + "]" + "->" + value + "\n")));
+    }
+
+    // Here we are create a function to view person by state from the map :-
+    public void viewPersonByStateMap() {
+        viewMap = new HashMap<>();
+        map.keySet().forEach(i -> map.get(i).stream()
+                .collect(groupingBy(Address::getState))
+                .forEach((key, value) -> viewMap.merge(key, value, (state, details) -> {
+                    state.addAll(details);
+                    return state;
+                })));
+        viewMap.forEach(((key, value) -> System.out.println("[" + key.toUpperCase() + "]" + "->" + value + "\n")));
+    }
+
+    // Here we are create a function to view person by city from the arraylist :-
+    public void viewPersonByCityList() {
+        viewMap = new HashMap<>();
+        list.stream().collect(groupingBy(Address::getCity))
+                .forEach((key, value) -> viewMap.merge(key, value, (city, details) -> {
+                    city.addAll(details);
+                    return city;
+                }));
+        viewMap.forEach(((key, value) -> System.out.println("[" + key.toUpperCase() + "]" + "->" + value + "\n")));
+    }
+
+    // Here we are create a function to view person by state from the arraylist :-
+    public void viewPersonByStateList() {
+        viewMap = new HashMap<>();
+        list.stream().collect(groupingBy(Address::getState))
+                .forEach((key, value) -> viewMap.merge(key, value, (state, details) -> {
+                    state.addAll(details);
+                    return state;
+                }));
+        viewMap.forEach(((key, value) -> System.out.println("[" + key.toUpperCase() + "]" + "->" + value + "\n")));
+    }
+
+    public void viewPersonFromList() {
+        boolean exit = true;
+        while (exit) {
+            System.out.print("1.View Person By City ");
+            System.out.print(" 2.View Person By State ");
+            System.out.print(" 0.Exit \n->");
+
+            int option = sc.nextInt();
+            sc.nextLine();
+            switch (option) {
+                case BY_CITY:
+                    viewPersonByCityList();
+                    break;
+                case BY_STATE:
+                    viewPersonByStateList();
+                    break;
+                case EXIT:
+                    exit = false;
+                    break;
+                default:
+                    System.out.println("Please Choose Valid Option!");
+                    break;
+            }
+        }
+    }
+
+    public void viewPersonFromMap() {
+        boolean exit = true;
+        while (exit) {
+            System.out.print("1.View Person By City ");
+            System.out.print(" 2.View Person By State ");
+            System.out.print(" 0.Exit \n->");
+
+            int option = sc.nextInt();
+            sc.nextLine();
+            switch (option) {
+                case BY_CITY:
+                    viewPersonByCityMap();
+                    break;
+                case BY_STATE:
+                    viewPersonByStateMap();
+                    break;
+                case EXIT:
+                    exit = false;
+                    break;
+                default:
+                    System.out.println("Please Choose Valid Option!");
+                    break;
+            }
+        }
     }
 
     public void searchPersonFromList() {
@@ -343,7 +442,8 @@ public class AddressBook {
             System.out.print(" 2.Edit Contact ");
             System.out.print(" 3.Delete Contact ");
             System.out.print(" 4.View Contact ");
-            System.out.print(" 5.Search Contact ");
+            System.out.print(" 5.Search Contact(City/State) ");
+            System.out.print(" 6.View Contact(City/State) ");
             System.out.print(" 0.Exit \n->");
 
             int option = sc.nextInt();
@@ -365,6 +465,9 @@ public class AddressBook {
                     break;
                 case SEARCH_PERSON:
                     searchPersonFromList();
+                    break;
+                case VIEW_PERSON:
+                    viewPersonFromList();
                     break;
                 case EXIT:
                     exit = false;
