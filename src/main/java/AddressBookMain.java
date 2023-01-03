@@ -8,6 +8,7 @@ public class AddressBookMain {
     public static final int EDIT_BOOK_DETAILS = 4;
     public static final int DELETE_BOOK_DETAILS = 5;
     public static final int DELETE_BOOK = 6;
+    public static final int SEARCH_PERSON = 7;
     public static final int EXIT = 0;
 
     public static void main(String[] args) {
@@ -21,8 +22,9 @@ public class AddressBookMain {
             System.out.print(" 2.Display AddressBook ");
             System.out.print(" 3.Open Old AddressBook ");
             System.out.print(" 4.Edit From Multiple Book ");
-            System.out.print(" 5.Delete From Multiple Book ");
-            System.out.print("\n6.Delete AddressBook ");
+            System.out.print(" 5.Delete From Multiple Book \n");
+            System.out.print("6.Delete AddressBook ");
+            System.out.print(" 7.Search Person ");
             System.out.print(" 0.Exit \n->");
 
             int options = sc.nextInt();
@@ -45,11 +47,14 @@ public class AddressBookMain {
                 case DELETE_BOOK:
                     addressBook.deleteAddressBook();
                     break;
+                case SEARCH_PERSON:
+                    addressBook.searchPersonFromMap();
+                    break;
                 case EXIT:
                     exit = false;
                     break;
                 default:
-                    System.out.println("Please Choose Valid Option! ");
+                    System.out.println("Please Choose Valid Option!");
                     break;
             }
         }

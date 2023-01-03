@@ -9,6 +9,14 @@ public class Address {
     private String phoneNumber;
     private String email;
 
+    public String getCity() {
+        return city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }

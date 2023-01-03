@@ -13,7 +13,10 @@ public class AddressBook {
     public static final int EDIT = 2;
     public static final int DELETE = 3;
     public static final int VIEW = 4;
+    public static final int SEARCH_PERSON = 5;
     public static final int EXIT = 0;
+    public static final int BY_CITY = 1;
+    public static final int BY_STATE = 2;
     public static final String MAP = "map";
 
     Map<String, ArrayList<Address>> map = new HashMap<>();
@@ -247,6 +250,92 @@ public class AddressBook {
         return check != null;
     }
 
+    // Here we are create a function to search person by city from the map by using user input :-
+    public void searchPersonByCityMap() {
+        System.out.println("Enter City Name To Search Person : ");
+        String searchByCity = sc.nextLine();
+        map.keySet().forEach(key -> map.get(key)
+                .stream().filter(i -> i.getCity().equals(searchByCity))
+                .toList().forEach(System.out::println));
+    }
+
+    // Here we are create a function to search person by state from the map by using user input :-
+    public void searchPersonByStateMap() {
+        System.out.println("Enter State Name To Search Person : ");
+        String searchByState = sc.nextLine();
+        map.keySet().forEach(key -> map.get(key)
+                .stream().filter(i -> i.getState().equals(searchByState))
+                .toList().forEach(System.out::println));
+    }
+
+    // Here we are create a function to search person by city from the arraylist by using user input :-
+    public void searchPersonByCityList() {
+        System.out.println("Enter City Name To Search Person : ");
+        String searchByCity = sc.nextLine();
+        list.stream().filter(i -> i.getCity().equals(searchByCity))
+                .toList().forEach(System.out::println);
+    }
+
+    // Here we are create a function to search person by state from the arraylist by using user input :-
+    public void searchPersonByStateList() {
+        System.out.println("Enter State Name To Search Person : ");
+        String searchByState = sc.nextLine();
+        list.stream().filter(i -> i.getState().equals(searchByState))
+                .toList().forEach(System.out::println);
+    }
+
+    public void searchPersonFromList() {
+        boolean exit = true;
+        while (exit) {
+            System.out.print("1.Search Person By City ");
+            System.out.print(" 2.Search Person By State ");
+            System.out.print(" 0.Exit \n->");
+
+            int option = sc.nextInt();
+            sc.nextLine();
+            switch (option) {
+                case BY_CITY:
+                    searchPersonByCityList();
+                    break;
+                case BY_STATE:
+                    searchPersonByStateList();
+                    break;
+                case EXIT:
+                    exit = false;
+                    break;
+                default:
+                    System.out.println("Please Choose Valid Option!");
+                    break;
+            }
+        }
+    }
+
+    public void searchPersonFromMap() {
+        boolean exit = true;
+        while (exit) {
+            System.out.print("1.Search Person By City ");
+            System.out.print(" 2.Search Person By State ");
+            System.out.print(" 0.Exit \n->");
+
+            int option = sc.nextInt();
+            sc.nextLine();
+            switch (option) {
+                case BY_CITY:
+                    searchPersonByCityMap();
+                    break;
+                case BY_STATE:
+                    searchPersonByStateMap();
+                    break;
+                case EXIT:
+                    exit = false;
+                    break;
+                default:
+                    System.out.println("Please Choose Valid Option!");
+                    break;
+            }
+        }
+    }
+
     public void operationInBook() {
         boolean exit = true;
         while (exit) {
@@ -254,6 +343,7 @@ public class AddressBook {
             System.out.print(" 2.Edit Contact ");
             System.out.print(" 3.Delete Contact ");
             System.out.print(" 4.View Contact ");
+            System.out.print(" 5.Search Contact ");
             System.out.print(" 0.Exit \n->");
 
             int option = sc.nextInt();
@@ -272,6 +362,9 @@ public class AddressBook {
                     break;
                 case VIEW:
                     showDetails();
+                    break;
+                case SEARCH_PERSON:
+                    searchPersonFromList();
                     break;
                 case EXIT:
                     exit = false;
