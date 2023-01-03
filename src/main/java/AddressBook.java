@@ -16,6 +16,7 @@ public class AddressBook {
     public static final int SEARCH_PERSON = 5;
     public static final int VIEW_PERSON = 6;
     public static final int COUNT_PERSON = 7;
+    public static final int SORT_PERSON = 8;
     public static final int EXIT = 0;
     public static final int BY_CITY = 1;
     public static final int BY_STATE = 2;
@@ -359,8 +360,7 @@ public class AddressBook {
     // Here we are create a function to count person by city from the arraylist :-
     public void countPersonByCityList() {
         countMap = new HashMap<>();
-        list.stream()
-                .collect(groupingBy(Address::getCity, counting()))
+        list.stream().collect(groupingBy(Address::getCity, counting()))
                 .forEach((key, value) -> {
                     countMap.merge(key, value, Long::sum);
                 });
@@ -370,12 +370,28 @@ public class AddressBook {
     // Here we are create a function to count person by state from the arraylist :-
     public void countPersonByStateList() {
         countMap = new HashMap<>();
-        list.stream()
-                .collect(groupingBy(Address::getState, counting()))
+        list.stream().collect(groupingBy(Address::getState, counting()))
                 .forEach((key, value) -> {
                     countMap.merge(key, value, Long::sum);
                 });
         countMap.forEach(((key, value) -> System.out.println("[" + key.toUpperCase() + "]" + "->" + value + "\n")));
+    }
+
+    // Here we are create a function to sort person by name from the map :-
+    public void sortByNameMap() {
+        viewMap = new HashMap<>();
+        map.keySet().forEach(i -> map.get(i).stream().collect(groupingBy(Address::getFirstName))
+                .forEach((key, value) -> viewMap.merge(key.toUpperCase(), value, (firstName, Details) -> {
+                    firstName.addAll(Details);
+                    return firstName;
+                })));
+        viewMap.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(System.out::println);
+    }
+
+    // Here we are create a function to sort person by name from the arraylist :-
+    public void sortByNameList() {
+        list.stream().sorted(Comparator.comparing(Address::getFirstName))
+                .toList().forEach(System.out::println);
     }
 
     public void countPersonList() {
@@ -544,6 +560,7 @@ public class AddressBook {
             System.out.print(" 5.Search Contact(City/State) ");
             System.out.print(" 6.View Contact(City/State) ");
             System.out.print("\n7.Count Contact(City/State) ");
+            System.out.print(" 8.Sort Person By Name ");
             System.out.print(" 0.Exit \n->");
 
             int option = sc.nextInt();
@@ -571,6 +588,9 @@ public class AddressBook {
                     break;
                 case COUNT_PERSON:
                     countPersonList();
+                    break;
+                case SORT_PERSON:
+                    sortByNameList();
                     break;
                 case EXIT:
                     exit = false;
