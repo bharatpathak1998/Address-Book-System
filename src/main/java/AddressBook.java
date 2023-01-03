@@ -1,20 +1,39 @@
 /**
  * @author Bharat Pathak
  */
+import java.util.Scanner;
+
 public class AddressBook {
 
-    // In this addDetails function we are set some data without user input(By hardcore) :-
+    Scanner sc = new Scanner(System.in);
+
+    // In this addDetails function we are set some data by user input :-
     public void addDetails() {
         Address address = new Address();
 
-        address.setFirstName("Bharat");
-        address.setLastName("Pathak");
-        address.setAddress("Shivaji Nagar");
-        address.setCity("Tumsar");
-        address.setState("Maharashtra");
-        address.setZip("441912");
-        address.setPhoneNumber("7559201321");
-        address.setEmail("bharatpathak099@gmail.com");
+        System.out.println("Enter First Name : ");
+        address.setFirstName(sc.nextLine());
+
+        System.out.println("Enter Last Name : ");
+        address.setLastName(sc.nextLine());
+
+        System.out.println("Enter Address : ");
+        address.setAddress(sc.nextLine());
+
+        System.out.println("Enter City Name : ");
+        address.setCity(sc.nextLine());
+
+        System.out.println("Enter State Name : ");
+        address.setState(sc.nextLine());
+
+        System.out.println("Enter Zip Code : ");
+        address.setZip(sc.nextLine());
+
+        System.out.println("Enter Phone Number : ");
+        address.setPhoneNumber(sc.nextLine());
+
+        System.out.println("Enter Email Id : ");
+        address.setEmail(sc.nextLine());
 
         System.out.println(address);
     }
