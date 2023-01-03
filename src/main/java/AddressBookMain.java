@@ -2,10 +2,12 @@ import java.util.Scanner;
 
 public class AddressBookMain {
 
-    public static final int ADD = 1;
-    public static final int EDIT = 2;
-    public static final int DELETE = 3;
-    public static final int VIEW = 4;
+    public static final int NEW_BOOK = 1;
+    public static final int DISPLAY_BOOK = 2;
+    public static final int OPEN_BOOK = 3;
+    public static final int EDIT_BOOK_DETAILS = 4;
+    public static final int DELETE_BOOK_DETAILS = 5;
+    public static final int DELETE_BOOK = 6;
     public static final int EXIT = 0;
 
     public static void main(String[] args) {
@@ -15,31 +17,39 @@ public class AddressBookMain {
         boolean exit = true;
         while (exit) {
 
-            System.out.print("1.Add Contact ");
-            System.out.print(" 2.Edit Contact ");
-            System.out.print(" 3.Delete Contact ");
-            System.out.print(" 4.View Contact ");
+            System.out.print("1.Add New AddressBook ");
+            System.out.print(" 2.Display AddressBook ");
+            System.out.print(" 3.Open Old AddressBook ");
+            System.out.print(" 4.Edit From Multiple Book ");
+            System.out.print(" 5.Delete From Multiple Book ");
+            System.out.print("\n6.Delete AddressBook ");
             System.out.print(" 0.Exit \n->");
 
             int options = sc.nextInt();
             switch (options) {
-                case ADD:
-                    addressBook.addDetails();
+                case NEW_BOOK:
+                    addressBook.newAddressBook();
                     break;
-                case EDIT:
-                    addressBook.editDetails();
+                case DISPLAY_BOOK:
+                    addressBook.displayAddressBook();
                     break;
-                case DELETE:
-                    addressBook.deleteDetails();
+                case OPEN_BOOK:
+                    addressBook.openAddressBook();
                     break;
-                case VIEW:
-                    addressBook.showDetails();
+                case EDIT_BOOK_DETAILS:
+                    addressBook.editFromMultipleBook();
+                    break;
+                case DELETE_BOOK_DETAILS:
+                    addressBook.deleteFromMultipleBook();
+                    break;
+                case DELETE_BOOK:
+                    addressBook.deleteAddressBook();
                     break;
                 case EXIT:
                     exit = false;
                     break;
                 default:
-                    System.out.println("Please Choose Valid Option!");
+                    System.out.println("Please Choose Valid Option! ");
                     break;
             }
         }
