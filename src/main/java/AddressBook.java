@@ -4,6 +4,7 @@
 
 import java.util.*;
 
+import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 
 public class AddressBook {
@@ -14,6 +15,7 @@ public class AddressBook {
     public static final int VIEW = 4;
     public static final int SEARCH_PERSON = 5;
     public static final int VIEW_PERSON = 6;
+    public static final int COUNT_PERSON = 7;
     public static final int EXIT = 0;
     public static final int BY_CITY = 1;
     public static final int BY_STATE = 2;
@@ -21,6 +23,7 @@ public class AddressBook {
 
     Map<String, ArrayList<Address>> map = new HashMap<>();
     Map<String, List<Address>> viewMap;
+    Map<String, Long> countMap;
     ArrayList<Address> list;
     Scanner sc = new Scanner(System.in);
 
@@ -331,6 +334,102 @@ public class AddressBook {
         viewMap.forEach(((key, value) -> System.out.println("[" + key.toUpperCase() + "]" + "->" + value + "\n")));
     }
 
+    // Here we are create a function to count person by city from the map :-
+    public void countPersonByCityMap() {
+        countMap = new HashMap<>();
+        map.keySet().forEach(i -> map.get(i).stream()
+                .collect(groupingBy(Address::getCity, counting()))
+                .forEach((key, value) -> {
+                    countMap.merge(key, value, Long::sum);
+                }));
+        countMap.forEach(((key, value) -> System.out.println("[" + key.toUpperCase() + "]" + "->" + value + "\n")));
+    }
+
+    // Here we are create a function to count person by state from the map :-
+    public void countPersonByStateMap() {
+        countMap = new HashMap<>();
+        map.keySet().forEach(i -> map.get(i).stream()
+                .collect(groupingBy(Address::getState, counting()))
+                .forEach((key, value) -> {
+                    countMap.merge(key, value, Long::sum);
+                }));
+        countMap.forEach(((key, value) -> System.out.println("[" + key.toUpperCase() + "]" + "->" + value + "\n")));
+    }
+
+    // Here we are create a function to count person by city from the arraylist :-
+    public void countPersonByCityList() {
+        countMap = new HashMap<>();
+        list.stream()
+                .collect(groupingBy(Address::getCity, counting()))
+                .forEach((key, value) -> {
+                    countMap.merge(key, value, Long::sum);
+                });
+        countMap.forEach(((key, value) -> System.out.println("[" + key.toUpperCase() + "]" + "->" + value + "\n")));
+    }
+
+    // Here we are create a function to count person by state from the arraylist :-
+    public void countPersonByStateList() {
+        countMap = new HashMap<>();
+        list.stream()
+                .collect(groupingBy(Address::getState, counting()))
+                .forEach((key, value) -> {
+                    countMap.merge(key, value, Long::sum);
+                });
+        countMap.forEach(((key, value) -> System.out.println("[" + key.toUpperCase() + "]" + "->" + value + "\n")));
+    }
+
+    public void countPersonList() {
+        boolean exit = true;
+        while (exit) {
+            System.out.print("1.Count Person By City ");
+            System.out.print(" 2.Count Person By State ");
+            System.out.print(" 0.Exit \n->");
+
+            int option = sc.nextInt();
+            sc.nextLine();
+            switch (option) {
+                case BY_CITY:
+                    countPersonByCityList();
+                    break;
+                case BY_STATE:
+                    countPersonByStateList();
+                    break;
+                case EXIT:
+                    exit = false;
+                    break;
+                default:
+                    System.out.println("Please Choose Valid Option!");
+                    break;
+            }
+        }
+    }
+
+    public void countPersonMap() {
+        boolean exit = true;
+        while (exit) {
+            System.out.print("1.Count Person By City ");
+            System.out.print(" 2.Count Person By State ");
+            System.out.print(" 0.Exit \n->");
+
+            int option = sc.nextInt();
+            sc.nextLine();
+            switch (option) {
+                case BY_CITY:
+                    countPersonByCityMap();
+                    break;
+                case BY_STATE:
+                    countPersonByStateMap();
+                    break;
+                case EXIT:
+                    exit = false;
+                    break;
+                default:
+                    System.out.println("Please Choose Valid Option!");
+                    break;
+            }
+        }
+    }
+
     public void viewPersonFromList() {
         boolean exit = true;
         while (exit) {
@@ -444,6 +543,7 @@ public class AddressBook {
             System.out.print(" 4.View Contact ");
             System.out.print(" 5.Search Contact(City/State) ");
             System.out.print(" 6.View Contact(City/State) ");
+            System.out.print("\n7.Count Contact(City/State) ");
             System.out.print(" 0.Exit \n->");
 
             int option = sc.nextInt();
@@ -468,6 +568,9 @@ public class AddressBook {
                     break;
                 case VIEW_PERSON:
                     viewPersonFromList();
+                    break;
+                case COUNT_PERSON:
+                    countPersonList();
                     break;
                 case EXIT:
                     exit = false;
