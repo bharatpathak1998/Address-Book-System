@@ -2,6 +2,12 @@
  * @author Bharat Pathak
  */
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import static java.util.stream.Collectors.counting;
@@ -219,6 +225,7 @@ public class AddressBook {
         for (Map.Entry<String, ArrayList<Address>> entry : map.entrySet()) {
             list = map.get(entry.getKey());
             editDetails(editByPhoneNumber, AddressBook.MAP);
+            writeAddressBookTxt();
         }
     }
 
@@ -229,6 +236,7 @@ public class AddressBook {
         for (Map.Entry<String, ArrayList<Address>> entry : map.entrySet()) {
             list = map.get(entry.getKey());
             deleteDetails(deleteByPhoneNumber, AddressBook.MAP);
+            writeAddressBookTxt();
         }
     }
 
@@ -242,6 +250,7 @@ public class AddressBook {
             String deleteBook = sc.nextLine().toUpperCase();
             if (map.containsKey(deleteBook)) {
                 map.remove(deleteBook);
+                writeAddressBookTxt();
                 System.out.println("AddressBook Deleted Successfully.");
             } else {
                 System.out.println("AddressBook Doesn't Exist!");
@@ -445,6 +454,35 @@ public class AddressBook {
     public void sortByZipList() {
         list.stream().sorted(Comparator.comparing(Address::getZip))
                 .toList().forEach(System.out::println);
+    }
+
+    // Here we are create a function to write a data in the text file from the map :-
+    public void writeAddressBookTxt() {
+        StringBuilder buffer = new StringBuilder();
+        map.keySet().forEach(key -> map.get(key)
+                .forEach(c -> buffer.append(c.toString().concat("\n"))));
+        try {
+            Path path = Paths.get("addressBook.txt");
+            Files.write(path, buffer.toString().getBytes());
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    // Here we are create a function to read the data from the text file :-
+    public void readAddressBookTxt() {
+        try {
+            File file = new File("addressBook.txt");
+            Scanner sc = new Scanner(file);
+            while (sc.hasNextLine()) {
+                String data = sc.nextLine();
+                System.out.println(data);
+            }
+            System.out.println("Data Read Successfully.");
+            sc.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void sortPersonList() {
@@ -720,6 +758,7 @@ public class AddressBook {
                     System.out.println("Please Choose Valid Option!");
                     break;
             }
+            writeAddressBookTxt();
         }
     }
 }

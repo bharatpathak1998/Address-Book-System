@@ -12,6 +12,7 @@ public class AddressBookMain {
     public static final int VIEW_PERSON = 8;
     public static final int COUNT_PERSON = 9;
     public static final int SORT_PERSON = 10;
+    public static final int READ_BOOK = 11;
     public static final int EXIT = 0;
 
     public static void main(String[] args) {
@@ -31,6 +32,7 @@ public class AddressBookMain {
             System.out.print(" 8.View Person ");
             System.out.print(" 9.Count Person ");
             System.out.print(" 10.Sort Person ");
+            System.out.print(" 11.Read Data From File ");
             System.out.print(" 0.Exit \n->");
 
             int options = sc.nextInt();
@@ -64,6 +66,9 @@ public class AddressBookMain {
                     break;
                 case SORT_PERSON:
                     addressBook.sortPersonMap();
+                    break;
+                case READ_BOOK:
+                    addressBook.readAddressBookTxt();
                     break;
                 case EXIT:
                     exit = false;
