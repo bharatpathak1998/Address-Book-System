@@ -9,6 +9,10 @@ public class Address {
     private String phoneNumber;
     private String email;
 
+    public String getZip() {
+        return zip;
+    }
+
     public String getFirstName() {
         return firstName;
     }

@@ -30,7 +30,7 @@ public class AddressBookMain {
             System.out.print(" 7.Search Person ");
             System.out.print(" 8.View Person ");
             System.out.print(" 9.Count Person ");
-            System.out.print(" 10.Sort Person By Name ");
+            System.out.print(" 10.Sort Person ");
             System.out.print(" 0.Exit \n->");
 
             int options = sc.nextInt();
@@ -63,7 +63,7 @@ public class AddressBookMain {
                     addressBook.countPersonMap();
                     break;
                 case SORT_PERSON:
-                    addressBook.sortByNameMap();
+                    addressBook.sortPersonMap();
                     break;
                 case EXIT:
                     exit = false;

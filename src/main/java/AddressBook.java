@@ -20,6 +20,8 @@ public class AddressBook {
     public static final int EXIT = 0;
     public static final int BY_CITY = 1;
     public static final int BY_STATE = 2;
+    public static final int BY_NAME = 3;
+    public static final int BY_ZIP = 4;
     public static final String MAP = "map";
 
     Map<String, ArrayList<Address>> map = new HashMap<>();
@@ -388,10 +390,129 @@ public class AddressBook {
         viewMap.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(System.out::println);
     }
 
+    // Here we are create a function to sort person by city from the map :-
+    public void sortByCityMap() {
+        viewMap = new HashMap<>();
+        map.keySet().forEach(i -> map.get(i).stream().collect(groupingBy(Address::getCity))
+                .forEach((key, value) -> viewMap.merge(key.toUpperCase(), value, (city, Details) -> {
+                    city.addAll(Details);
+                    return city;
+                })));
+        viewMap.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(System.out::println);
+    }
+
+    // Here we are create a function to sort person by state from the map :-
+    public void sortByStateMap() {
+        viewMap = new HashMap<>();
+        map.keySet().forEach(i -> map.get(i).stream().collect(groupingBy(Address::getState))
+                .forEach((key, value) -> viewMap.merge(key.toUpperCase(), value, (state, Details) -> {
+                    state.addAll(Details);
+                    return state;
+                })));
+        viewMap.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(System.out::println);
+    }
+
+    // Here we are create a function to sort person by zip from the map :-
+    public void sortByZipMap() {
+        viewMap = new HashMap<>();
+        map.keySet().forEach(i -> map.get(i).stream().collect(groupingBy(Address::getZip))
+                .forEach((key, value) -> viewMap.merge(key.toUpperCase(), value, (zip, Details) -> {
+                    zip.addAll(Details);
+                    return zip;
+                })));
+        viewMap.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(System.out::println);
+    }
+
     // Here we are create a function to sort person by name from the arraylist :-
     public void sortByNameList() {
         list.stream().sorted(Comparator.comparing(Address::getFirstName))
                 .toList().forEach(System.out::println);
+    }
+
+    // Here we are create a function to sort person by city from the arraylist :-
+    public void sortByCityList() {
+        list.stream().sorted(Comparator.comparing(Address::getCity))
+                .toList().forEach(System.out::println);
+    }
+
+    // Here we are create a function to sort person by state from the arraylist :-
+    public void sortByStateList() {
+        list.stream().sorted(Comparator.comparing(Address::getState))
+                .toList().forEach(System.out::println);
+    }
+
+    // Here we are create a function to sort person by zip from the arraylist :-
+    public void sortByZipList() {
+        list.stream().sorted(Comparator.comparing(Address::getZip))
+                .toList().forEach(System.out::println);
+    }
+
+    public void sortPersonList() {
+        boolean exit = true;
+        while (exit) {
+            System.out.print("1.Sort Person By City ");
+            System.out.print(" 2.Sort Person By State ");
+            System.out.print(" 3.Sort Person By Name ");
+            System.out.print(" 4.Sort Person By Zip ");
+            System.out.print(" 0.Exit \n->");
+
+            int option = sc.nextInt();
+            sc.nextLine();
+            switch (option) {
+                case BY_CITY:
+                    sortByCityList();
+                    break;
+                case BY_STATE:
+                    sortByStateList();
+                    break;
+                case BY_NAME:
+                    sortByNameList();
+                    break;
+                case BY_ZIP:
+                    sortByZipList();
+                    break;
+                case EXIT:
+                    exit = false;
+                    break;
+                default:
+                    System.out.println("Please Choose Valid Option!");
+                    break;
+            }
+        }
+    }
+
+    public void sortPersonMap() {
+        boolean exit = true;
+        while (exit) {
+            System.out.print("1.Sort Person By City ");
+            System.out.print(" 2.Sort Person By State ");
+            System.out.print(" 3.Sort Person By Name ");
+            System.out.print(" 4.Sort Person By Zip ");
+            System.out.print(" 0.Exit \n->");
+
+            int option = sc.nextInt();
+            sc.nextLine();
+            switch (option) {
+                case BY_CITY:
+                    sortByCityMap();
+                    break;
+                case BY_STATE:
+                    sortByStateMap();
+                    break;
+                case BY_NAME:
+                    sortByNameMap();
+                    break;
+                case BY_ZIP:
+                    sortByZipMap();
+                    break;
+                case EXIT:
+                    exit = false;
+                    break;
+                default:
+                    System.out.println("Please Choose Valid Option!");
+                    break;
+            }
+        }
     }
 
     public void countPersonList() {
@@ -560,7 +681,7 @@ public class AddressBook {
             System.out.print(" 5.Search Contact(City/State) ");
             System.out.print(" 6.View Contact(City/State) ");
             System.out.print("\n7.Count Contact(City/State) ");
-            System.out.print(" 8.Sort Person By Name ");
+            System.out.print(" 8.Sort Person(Name/City/State/Zip) ");
             System.out.print(" 0.Exit \n->");
 
             int option = sc.nextInt();
@@ -590,7 +711,7 @@ public class AddressBook {
                     countPersonList();
                     break;
                 case SORT_PERSON:
-                    sortByNameList();
+                    sortPersonList();
                     break;
                 case EXIT:
                     exit = false;
