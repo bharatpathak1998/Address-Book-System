@@ -9,7 +9,6 @@ public class AddressBook {
     Scanner sc = new Scanner(System.in);
     Address address = new Address();
 
-
     // In this addDetails function we are set some data by user input :-
     public void addDetails() {
 
@@ -49,6 +48,20 @@ public class AddressBook {
         } else {
             System.out.println("Please Enter Valid Phone Number!");
             editDetails();
+        }
+    }
+
+    // In this deleteDetails function we are delete data by user input :-
+    public void deleteDetails() {
+        System.out.println("Enter Phone Number Of A Person To Delete : ");
+        String deleteByPhoneNumber = sc.nextLine();
+        if (address.getPhoneNumber().equals(deleteByPhoneNumber)) {
+            address = null;
+            System.out.println(address);
+            System.out.println("Details Deleted Successfully.");
+        } else {
+            System.out.println("Please Enter Valid Phone Number!");
+            deleteDetails();
         }
     }
 }

@@ -4,5 +4,6 @@ public class AddressBookMain {
         AddressBook addressBook = new AddressBook();
         addressBook.addDetails();
         addressBook.editDetails();
+        addressBook.deleteDetails();
     }
 }
