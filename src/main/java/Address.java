@@ -9,6 +9,10 @@ public class Address {
     private String phoneNumber;
     private String email;
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
