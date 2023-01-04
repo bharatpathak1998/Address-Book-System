@@ -2,9 +2,8 @@
  * @author Bharat Pathak
  */
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import com.opencsv.CSVWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -34,6 +33,7 @@ public class AddressBook {
     Map<String, List<Address>> viewMap;
     Map<String, Long> countMap;
     ArrayList<Address> list;
+    List<String[]> fileData;
     Scanner sc = new Scanner(System.in);
 
     // Here we are create a function to add details in the arraylist by using user input :-
@@ -226,6 +226,7 @@ public class AddressBook {
             list = map.get(entry.getKey());
             editDetails(editByPhoneNumber, AddressBook.MAP);
             writeAddressBookTxt();
+            writeAddressBookCsv();
         }
     }
 
@@ -237,6 +238,7 @@ public class AddressBook {
             list = map.get(entry.getKey());
             deleteDetails(deleteByPhoneNumber, AddressBook.MAP);
             writeAddressBookTxt();
+            writeAddressBookCsv();
         }
     }
 
@@ -251,6 +253,7 @@ public class AddressBook {
             if (map.containsKey(deleteBook)) {
                 map.remove(deleteBook);
                 writeAddressBookTxt();
+                writeAddressBookCsv();
                 System.out.println("AddressBook Deleted Successfully.");
             } else {
                 System.out.println("AddressBook Doesn't Exist!");
@@ -471,14 +474,69 @@ public class AddressBook {
 
     // Here we are create a function to read the data from the text file :-
     public void readAddressBookTxt() {
+        boolean flag = false;
         try {
             File file = new File("addressBook.txt");
             Scanner sc = new Scanner(file);
             while (sc.hasNextLine()) {
                 String data = sc.nextLine();
                 System.out.println(data);
+                if (!data.isEmpty()) {
+                    flag = true;
+                }
             }
-            System.out.println("Data Read Successfully.");
+            if (flag) {
+                System.out.println("Data Read Successfully.");
+            } else {
+                System.out.println("File Is Empty!");
+            }
+            sc.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Here we are create a function to write a data in the csv file from the map :-
+    public void writeAddressBookCsv() {
+        Path path = Paths.get("addressBook.csv");
+        try {
+            FileWriter fileFilter = new FileWriter(path.toFile());
+            CSVWriter writer = new CSVWriter(fileFilter);
+            fileData = new ArrayList<>();
+            String[] header = {"FirstName", "LastName", "Address", "City", "State",
+                    "ZipCode", "PhoneNumber", "EmailId"};
+            fileData.add(header);
+
+            map.values().forEach(value -> value.stream().map(contact -> new String[]{contact.getFirstName(),
+                    contact.getLastName(), contact.getAddress(), contact.getCity(),
+                    contact.getState(), contact.getZip(), contact.getPhoneNumber(),
+                    contact.getEmail()}).forEach(info -> fileData.add(info)));
+
+            writer.writeAll(fileData);
+            writer.close();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    // Here we are create a function to read the data from the csv file :-
+    public void readAddressBookCsv() {
+        boolean flag = false;
+        try {
+            Scanner sc = new Scanner(new File("addressBook.csv"));
+            sc.useDelimiter(",");
+            while (sc.hasNextLine()) {
+                String data = sc.nextLine();
+                System.out.println(data);
+                if (!data.isEmpty()) {
+                    flag = true;
+                }
+            }
+            if (flag) {
+                System.out.println("Data Read Successfully.");
+            } else {
+                System.out.println("File Is Empty!");
+            }
             sc.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -759,6 +817,7 @@ public class AddressBook {
                     break;
             }
             writeAddressBookTxt();
+            writeAddressBookCsv();
         }
     }
 }
