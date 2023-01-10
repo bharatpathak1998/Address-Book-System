@@ -2,7 +2,9 @@
  * @author Bharat Pathak
  */
 
+import com.google.gson.Gson;
 import com.opencsv.CSVWriter;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,6 +36,7 @@ public class AddressBook {
     Map<String, Long> countMap;
     ArrayList<Address> list;
     List<String[]> fileData;
+    List<Address> file;
     Scanner sc = new Scanner(System.in);
 
     // Here we are create a function to add details in the arraylist by using user input :-
@@ -191,6 +194,23 @@ public class AddressBook {
         }
     }
 
+    // Here we are create a function to edit address book name by using user input :-
+    public void editAddressBookName() {
+        System.out.println("AddressBooks : " + map.keySet());
+        System.out.println("Enter Old Name Of AddressBook You Want To Change Name : ");
+        String oldBookName = sc.nextLine().toUpperCase();
+        if (map.containsKey(oldBookName)) {
+
+            System.out.println("Enter New Name Of AddressBook : ");
+            String newBookName = sc.nextLine().toUpperCase();
+
+            map.put(newBookName, map.remove(oldBookName));
+            System.out.println("AddressBook Name [" + newBookName + "] Edited Successfully.");
+        } else {
+            System.out.println("Please Enter Valid Name Of AddressBook!");
+        }
+    }
+
     // Here we are create a function to display books and their addresses :-
     public void displayAddressBook() {
         System.out.println("Number Of AddressBook : " + map.size() + "\n");
@@ -227,6 +247,7 @@ public class AddressBook {
             editDetails(editByPhoneNumber, AddressBook.MAP);
             writeAddressBookTxt();
             writeAddressBookCsv();
+            writeAddressBookJson();
         }
     }
 
@@ -239,6 +260,7 @@ public class AddressBook {
             deleteDetails(deleteByPhoneNumber, AddressBook.MAP);
             writeAddressBookTxt();
             writeAddressBookCsv();
+            writeAddressBookJson();
         }
     }
 
@@ -254,6 +276,7 @@ public class AddressBook {
                 map.remove(deleteBook);
                 writeAddressBookTxt();
                 writeAddressBookCsv();
+                writeAddressBookJson();
                 System.out.println("AddressBook Deleted Successfully.");
             } else {
                 System.out.println("AddressBook Doesn't Exist!");
@@ -275,7 +298,7 @@ public class AddressBook {
         String searchByCity = sc.nextLine();
         map.keySet().forEach(key -> map.get(key).stream()
                 .filter(i -> i.getCity().equals(searchByCity))
-                .toList().forEach(System.out::println));
+                .forEach(System.out::println));
     }
 
     // Here we are create a function to search person by state from the map by using user input :-
@@ -284,7 +307,7 @@ public class AddressBook {
         String searchByState = sc.nextLine();
         map.keySet().forEach(key -> map.get(key).stream()
                 .filter(i -> i.getState().equals(searchByState))
-                .toList().forEach(System.out::println));
+                .forEach(System.out::println));
     }
 
     // Here we are create a function to search person by city from the arraylist by using user input :-
@@ -292,7 +315,7 @@ public class AddressBook {
         System.out.println("Enter City Name To Search Person : ");
         String searchByCity = sc.nextLine();
         list.stream().filter(i -> i.getCity().equals(searchByCity))
-                .toList().forEach(System.out::println);
+                .forEach(System.out::println);
     }
 
     // Here we are create a function to search person by state from the arraylist by using user input :-
@@ -300,7 +323,7 @@ public class AddressBook {
         System.out.println("Enter State Name To Search Person : ");
         String searchByState = sc.nextLine();
         list.stream().filter(i -> i.getState().equals(searchByState))
-                .toList().forEach(System.out::println);
+                .forEach(System.out::println);
     }
 
     // Here we are create a function to view person by city from the map :-
@@ -540,6 +563,36 @@ public class AddressBook {
             sc.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    // Here we are create a function to write a data in the json file from the map :-
+    public void writeAddressBookJson() {
+        try {
+            file = new ArrayList<>();
+            Gson gson = new Gson();
+            FileWriter writer = new FileWriter("addressBook.json");
+            map.values().forEach(value -> file.addAll(value));
+            String json = gson.toJson(file);
+            writer.write(json);
+            writer.close();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    // Here we are create a function to read the data from the json file :-
+    public void readAddressBookJson() {
+        try {
+            String reader = new String(Files.readAllBytes(Paths.get("addressBook.json")));
+            if (reader.isEmpty()) {
+                System.out.println("File Is Empty!");
+            } else {
+                System.out.println(reader);
+                System.out.println("Data Read Successfully.");
+            }
+        } catch (IOException exception) {
+            exception.printStackTrace();
         }
     }
 
@@ -818,6 +871,7 @@ public class AddressBook {
             }
             writeAddressBookTxt();
             writeAddressBookCsv();
+            writeAddressBookJson();
         }
     }
 }

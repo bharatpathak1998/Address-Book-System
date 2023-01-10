@@ -1,0 +1,30 @@
+[
+  {
+    "firstName": "Bharat",
+    "lastName": "Pathak",
+    "address": "Shivaji Nagar",
+    "city": "Tumsar",
+    "state": "Maharashtra",
+    "zip": "441912",
+    "phoneNumber": "7559201365",
+    "email": "bharatpathak099@gmail.com"
+  }, {
+    "firstName":"Yash",
+    "lastName":"Gharde",
+    "address":"Vinoba Nagar",
+    "city":"Tumsar",
+    "state":"Maharashtra",
+    "zip":"441912",
+    "phoneNumber":"9975416952",
+    "email":"yashgharde07@gmail.com"
+  }, {
+    "firstName":"Mohit",
+    "lastName":"Pathak",
+    "address":"Shivaji Nagar",
+    "city":"Tumsar",
+    "state":"Maharashtra",
+    "zip":"441912",
+    "phoneNumber":"9156842587",
+    "email":"pathakmohit0766@gmail.com"
+  }
+]
