@@ -9,6 +9,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.*;
 import java.util.*;
 
 import static java.util.stream.Collectors.counting;
@@ -37,6 +38,7 @@ public class AddressBook {
     ArrayList<Address> list;
     List<String[]> fileData;
     List<Address> file;
+    List<Address> addressBookList;
     Scanner sc = new Scanner(System.in);
 
     // Here we are create a function to add details in the arraylist by using user input :-
@@ -593,6 +595,51 @@ public class AddressBook {
             }
         } catch (IOException exception) {
             exception.printStackTrace();
+        }
+    }
+
+    // Here we are connecting database(MySql) using java program :-
+    public Connection getConnection() throws SQLException {
+        String jdbcURL = "jdbc:mysql://localhost:3306/AddressBookDB";
+        String userName = "root";
+        String password = "Bharat@123";
+        Connection connection;
+        System.out.println("Connecting To Database : " + jdbcURL);
+        connection = DriverManager.getConnection(jdbcURL, userName, password);
+        System.out.println("Connection Is Successful : " + connection);
+        return connection;
+    }
+
+    // Here we are getting the data from the database and added in the arraylist :-
+    public void getData(ResultSet resultSet) throws SQLException {
+        addressBookList = new ArrayList<>();
+        while (resultSet.next()) {
+            Address person = new Address();
+            person.setFirstName(resultSet.getString("first_Name"));
+            person.setLastName(resultSet.getString("Last_name"));
+            person.setAddress(resultSet.getString("address"));
+            person.setCity(resultSet.getString("city"));
+            person.setState(resultSet.getString("state"));
+            person.setZip(resultSet.getString("zip"));
+            person.setPhoneNumber(resultSet.getString("phone_Number"));
+            person.setEmail(resultSet.getString("email"));
+
+            addressBookList.add(person);
+        }
+    }
+
+    // Here we are retrieve the data from the database using arraylist :-
+    public void retrieveData() {
+        addressBookList = new ArrayList<>();
+        try (Connection connection = getConnection()) {
+            Statement statement = connection.createStatement();
+            String sql = "select * from AddressBook";
+            ResultSet resultSet = statement.executeQuery(sql);
+            getData(resultSet);
+            addressBookList.forEach(System.out::println);
+            System.out.println("Data Retrieve Successfully.");
+        } catch (SQLException e) {
+            System.out.println(e);
         }
     }
 
