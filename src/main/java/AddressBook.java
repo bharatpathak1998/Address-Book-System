@@ -643,6 +643,60 @@ public class AddressBook {
         }
     }
 
+    // Here we are update the data in the database using user input :-
+    public void updateContact() {
+        System.out.println("Enter Phone Number Of A Person To Update : ");
+        String ByPhoneNumber = sc.nextLine();
+
+        System.out.println("Enter New First Name : ");
+        String firstName = sc.nextLine();
+
+        System.out.println("Enter New Last Name : ");
+        String lastName = sc.nextLine();
+
+        System.out.println("Enter New Address : ");
+        String address = sc.nextLine();
+
+        System.out.println("Enter New City Name : ");
+        String city = sc.nextLine();
+
+        System.out.println("Enter New State Name : ");
+        String state = sc.nextLine();
+
+        System.out.println("Enter New Zip Code : ");
+        String zip = sc.nextLine();
+
+        System.out.println("Enter New Email Id : ");
+        String email = sc.nextLine();
+
+        System.out.println("Enter New Phone Number : ");
+        String phoneNumber = sc.nextLine();
+
+        System.out.println("Enter New Start Date YYYY-MM-DD : ");
+        String startDate = sc.nextLine();
+
+        try (Connection connection = getConnection()) {
+            Statement statement = connection.createStatement();
+
+            String query = "update AddressBook set first_name='" + firstName + "'," +
+                    "" + "last_name='" + lastName + "'," +
+                    "" + "address='" + address + "'," +
+                    "" + "city='" + city + "'," +
+                    "" + "state='" + state + "'," +
+                    "" + "zip='" + zip + "'," +
+                    "" + "email='" + email + "'," +
+                    "" + "phone_number='" + phoneNumber + "'," +
+                    "" + "start_date='" + startDate + "'" +
+                    " where phone_number='" + ByPhoneNumber + "'";
+
+            int result = statement.executeUpdate(query);
+            if (result == 1)
+                System.out.println("Contact Updated Successfully.");
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
+
     public void sortPersonList() {
         boolean exit = true;
         while (exit) {

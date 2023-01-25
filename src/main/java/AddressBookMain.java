@@ -17,6 +17,8 @@ public class AddressBookMain {
     public static final int READ_CSV = 13;
     public static final int READ_JSON = 14;
     public static final int RETRIEVE_DATA = 15;
+    public static final int UPDATE_CONTACT = 16;
+
     public static final int EXIT = 0;
 
     public static void main(String[] args) {
@@ -41,6 +43,7 @@ public class AddressBookMain {
             System.out.print(" 13.Read Data From CSV \n");
             System.out.print("14.Read Data From JSON ");
             System.out.print(" 15.Retrieve Entries From DB ");
+            System.out.print(" 16.Update Contacts In DB ");
             System.out.print(" 0.Exit \n->");
 
             int options = sc.nextInt();
@@ -89,6 +92,9 @@ public class AddressBookMain {
                     break;
                 case RETRIEVE_DATA:
                     addressBook.retrieveData();
+                    break;
+                case UPDATE_CONTACT:
+                    addressBook.updateContact();
                     break;
                 case EXIT:
                     exit = false;
